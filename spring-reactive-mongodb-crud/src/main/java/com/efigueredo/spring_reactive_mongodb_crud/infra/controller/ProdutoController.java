@@ -1,5 +1,6 @@
 package com.efigueredo.spring_reactive_mongodb_crud.infra.controller;
 
+import com.efigueredo.spring_reactive_mongodb_crud.infra.exception.CrudReactiveException;
 import com.efigueredo.spring_reactive_mongodb_crud.service.dto.ProdutoDto;
 import com.efigueredo.spring_reactive_mongodb_crud.service.produto.ProdutosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public Mono<ProdutoDto> saveProduto(@RequestBody Mono<ProdutoDto> produtoDtoMono) {
+    public Mono<ProdutoDto> saveProduto(@RequestBody Mono<ProdutoDto> produtoDtoMono) throws Exception {
         return this.produtosService.salvarProduto(produtoDtoMono);
     }
 

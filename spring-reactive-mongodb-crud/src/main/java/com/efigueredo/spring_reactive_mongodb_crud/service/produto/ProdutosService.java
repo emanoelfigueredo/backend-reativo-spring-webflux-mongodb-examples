@@ -2,6 +2,7 @@ package com.efigueredo.spring_reactive_mongodb_crud.service.produto;
 
 import com.efigueredo.spring_reactive_mongodb_crud.domain.entidades.Produto;
 import com.efigueredo.spring_reactive_mongodb_crud.domain.repository.ProdutoRepository;
+import com.efigueredo.spring_reactive_mongodb_crud.infra.exception.CrudReactiveException;
 import com.efigueredo.spring_reactive_mongodb_crud.service.dto.ProdutoDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,19 @@ public class ProdutosService {
         return repository.findByPrecoBetween(Range.closed(min, max));
     }
 
-    public Mono<ProdutoDto> salvarProduto(Mono<ProdutoDto> produtoDtoMono) {
+    public Mono<ProdutoDto> salvarProduto(Mono<ProdutoDto> produtoDtoMono) throws Exception {
         return produtoDtoMono.map(produtoDto -> this.modelMapper.map(produtoDto, Produto.class))
                 .flatMap(this.repository::insert)
-                .map(produto -> this.modelMapper.map(produto, ProdutoDto.class));
+                .map(produto -> {
+                    if(1 == 1) {
+                        try {
+                            throw new CrudReactiveException("teste", "teste", "", 400);
+                        } catch (Exception e) {
+                            throw new CrudReactiveException("teste", "teste", "", 400);
+                        }
+                    }
+                    return this.modelMapper.map(produto, ProdutoDto.class);
+                });
 
     }
 
